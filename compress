@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cd /img
+mkdir -p optimized
+
+if [[ -z "$QUALITY" ]]; then
+  QUALITY=90
+fi
+
+echo "processing png files"
+#exec png crush on img directory
+
+echo "processing jpg files"
+#exec cjpeg on img directory
+
+

@@ -2,7 +2,7 @@
 
 cd /img
 mkdir -p optimized
-rm -rf ./optimized/* ## Remove all the old optimized images
+rm -rf optimized/* ## Remove all the old optimized images
 
 if [[ -z "$QUALITY" ]]; then
   QUALITY=90
@@ -17,8 +17,18 @@ else
 fi
 
 echo "processing png files"
-find . -iname "*.png" -print0 | xargs -r -0 -I pngimg pngcrush $DBGA -d ./optimized pngimg
+find . -iname "*.png" | while IFS= read -r pathname; do
+  echo $pathname;
+  DIRPATH=$(dirname "$pathname")
+  mkdir -p optimized/$DIRPATH
+  pngcrush $DBGA -d optimized/$DIRPATH $pathname
+done
 
 echo "processing jpg files"
-find . -iname "*.jpg" -print0 | xargs -r -0 -I jpgimg cjpeg $JDBGA -outfile optimized/jpgimg -quality $QUALITY jpgimg
+find . -iname "*.jpg" | while IFS= read -r pathname; do
+  echo $pathname
+  DIRPATH=$(dirname "$pathname")
+  mkdir -p optimized/$DIRPATH
+  cjpeg $JDBGA -outfile optimized/$pathname -quality $QUALITY $pathname
+done
 

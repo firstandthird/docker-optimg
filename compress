@@ -19,13 +19,18 @@ fi
 echo "processing png files"
 find . -iname "*.png" | while IFS= read -r pathname; do
   echo $pathname;
+  FILESIZE=$(ls -l "$pathname" | awk '{print $5}');
   DIRPATH=$(dirname "$pathname")
   mkdir -p optimized/$DIRPATH
   pngcrush $DBGA -d optimized/$DIRPATH $pathname
+  NEWFS=$(ls -l "optimized/$pathname" | awk '{print $5}');
+  DIFF=$(( FILESIZE - NEWFS))
+  CHG=$( echo "scale=5; ($DIFF / $FILESIZE)*100" | bc)
+  echo "Crushed $CHG%"
 done
 
 echo "processing jpg files"
-find . -iname "*.jpg" | while IFS= read -r pathname; do
+find ./ -type f \( -iname \*.jpg -o -iname \*.jpeg \) | while IFS= read -r pathname; do
   echo $pathname
   DIRPATH=$(dirname "$pathname")
   mkdir -p optimized/$DIRPATH

@@ -11,6 +11,7 @@ RUN git clone git://github.com/mozilla/mozjpeg.git && \
 
 #install pngcrush
 RUN apk add pngcrush
+RUN apk add bc
 
 ADD compress /compress
 

@@ -2,7 +2,7 @@
 
 ### Usage:
 
-`sudo docker run -v $(pwd):/img firstandthird/optimg`
+`docker run -v $(pwd):/img firstandthird/optimg`
 
 ### Variables
 

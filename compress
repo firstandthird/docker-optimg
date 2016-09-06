@@ -2,15 +2,23 @@
 
 cd /img
 mkdir -p optimized
+rm -rf ./optimized/* ## Remove all the old optimized images
 
 if [[ -z "$QUALITY" ]]; then
   QUALITY=90
 fi
 
+if [[ -z "$DEBUG" ]]; then
+  DBGA="-q"
+  JDBGA=""
+else
+  DBGA="-v"
+  JDBGA="-v"
+fi
+
 echo "processing png files"
-#exec png crush on img directory
+find . -iname "*.png" -print0 | xargs -r -0 -I pngimg pngcrush $DBGA -d ./optimized pngimg
 
 echo "processing jpg files"
-#exec cjpeg on img directory
-
+find . -iname "*.jpg" -print0 | xargs -r -0 -I jpgimg cjpeg $JDBGA -outfile optimized/jpgimg -quality $QUALITY jpgimg
 
